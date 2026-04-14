@@ -220,7 +220,9 @@ sudo apt install make gcc ripgrep fd-find tree-sitter-cli unzip git xclip neovim
 
 ```
 sudo apt update
-sudo apt install make gcc ripgrep fd-find tree-sitter-cli unzip git xclip curl
+sudo apt install make gcc ripgrep fd-find tree-sitter-cli unzip git xclip curl luarocks
+sudo luarocks install luafilesystem
+sudo luarocks install luasec
 
 # Now we install nvim
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
@@ -232,6 +234,10 @@ sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 # make it available in /usr/local/bin, distro installs to /usr/bin
 sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/
 ```
+
+> **Note:** On Debian-based systems, `fd-find` and `tree-sitter-cli` require manual installation as they are not always available in default repositories. If unavailable via apt, install them manually:
+> - `fd-find`: https://github.com/sharkdp/fd#installation
+> - `tree-sitter-cli`: https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md#installation
 </details>
 <details><summary>Fedora Install Steps</summary>
 
