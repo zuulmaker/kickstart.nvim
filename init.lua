@@ -876,7 +876,10 @@ require('lazy').setup({
     config = function()
       -- ensure basic parser are installed
       local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
-      require('nvim-treesitter').install(parsers)
+      local ok, err = pcall(require('nvim-treesitter').install, parsers)
+      if not ok then
+        vim.notify('nvim-treesitter: Parser-Installation fehlgeschlagen. Ist tree-sitter-cli installiert?\n' .. tostring(err), vim.log.levels.WARN)
+      end
 
       ---@param buf integer
       ---@param language string
@@ -914,7 +917,10 @@ require('lazy').setup({
             treesitter_try_attach(buf, language)
           elseif vim.tbl_contains(available_parsers, language) then
             -- if a parser is available in `nvim-treesitter` auto install it, and enable it after the installation is done
-            require('nvim-treesitter').install(language):await(function() treesitter_try_attach(buf, language) end)
+            local install_ok, install_promise = pcall(require('nvim-treesitter').install, language)
+            if install_ok and install_promise then
+              install_promise:await(function() treesitter_try_attach(buf, language) end)
+            end
           else
             -- try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
             treesitter_try_attach(buf, language)
